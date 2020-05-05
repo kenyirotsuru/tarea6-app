@@ -22,7 +22,7 @@ const Todo = ({todo, markAsDone, deleteTask}) =>{
                 )}
                 <input type="button" 
                     value="eliminar" 
-                    onClick={(event) => handleDelete(event, todo.i)}
+                    onClick={(event) => handleDelete(event, todo.id)}
                 />
             </td>
         </tr>

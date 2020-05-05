@@ -38,10 +38,10 @@ function App() {
   }
   
 
-  const markAsDone = (task) => {
+  const markAsDone = (id) => {    
     //conectar a bd 
     Axios({
-      method: 'post', url: url + '/tasks/' + task.id + '/done',
+      method: 'post', url: url + '/tasks/' + id + '/done',
     }).then((_Task) => {
       fetchTodos();
     }).catch((err) => {
@@ -49,10 +49,11 @@ function App() {
     })
   }
 
-  const deleteTask = (task) => {
+  const deleteTask = (id) => {
+
     //conectar a bd
     Axios({
-      method: 'delete', url: url + '/tasks/' + task.id,
+      method: 'delete', url: url + '/tasks/' + id,
     }).then((_Task) => {
       fetchTodos();
     }).catch((err) => {
