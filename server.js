@@ -1,6 +1,7 @@
 // Imports
 const express = require('express');
 const webRoutes = require('./routes/web');
+const cors = require('cors');
 
 // Express app creation
 const app = express();
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Routes
+app.use(cors());
 app.use('/', webRoutes);
 
 // App init

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import Todo from './Todo'
 
-const TodoList = ({ todos, markAsDone, deleteTask }) => {
-  
+const TodoList = ({todos, markAsDone, deleteTask }) => {
   return (
     <div>
       <table border="1">
@@ -16,7 +15,7 @@ const TodoList = ({ todos, markAsDone, deleteTask }) => {
         <tbody>
           {todos.map((todo, i) => {
             return (
-              <Todo todo={todo} markAsDone={markAsDone} deleteTask={deleteTask} />
+              <Todo key={i} todo={todo} markAsDone={markAsDone} deleteTask={deleteTask} />
             )
           })}
         </tbody>
