@@ -1,34 +1,74 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Create from './components/todo/Create';
-import Index from './components/todo/Index';
+import TodoList from './components/todo/TodoList';
+import Axios from 'axios';
 
 function App() {
-
+  
+  const url = 'http://localhost:3001';
   const [todos, setTodos] = useState([]);
 
+  const fetchTodos = async () => {
+    try {
+      const result = await Axios(url + '/');
+      setTodos(result.data);
+    }catch(err) {
+      //Atrapar errores
+      console.log(err);
+    }
+  };
+
+  //manejar los updates del fetch
+  useEffect(() => {
+    fetchTodos();
+  },[todos]);
+
   const addTodo = (description) => {
-    let cTodos = Object.assign([], todos);
-    cTodos.push({ description: description, status: 'pending' });
-    setTodos(cTodos);
+    //conectar a bd
+    Axios({
+      method: 'post', url: url + '/tasks',
+      data: {
+        description : description
+      }
+    }).then((_newTask) => {
+      fetchTodos();
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
+  
+
+  const markAsDone = (id) => {    
+    //conectar a bd 
+    Axios({
+      method: 'post', url: url + '/tasks/' + id + '/done',
+    }).then((_Task) => {
+      fetchTodos();
+    }).catch((err) => {
+      console.log(err);
+    })
   }
 
-  const markAsDone = (task) => {
-    let cTodos = Object.assign([], todos);
-    cTodos[task].status = 'done';
-    setTodos(cTodos);
+  const deleteTask = (id) => {
+
+    //conectar a bd
+    Axios({
+      method: 'delete', url: url + '/tasks/' + id,
+    }).then((_Task) => {
+      fetchTodos();
+    }).catch((err) => {
+      console.log(err);
+    })
   }
 
-  const deleteTask = (task) => {
-    let cTodos = Object.assign([], todos);
-    cTodos.splice(task, 1);
-    setTodos(cTodos);
-  }
+  
+
 
   return (
     <>
       <h1>Todo list</h1>
       <Create addTodo={addTodo}/>
-      <Index todos={todos} markAsDone={markAsDone} deleteTask={deleteTask} />
+      <TodoList todos={todos} markAsDone={markAsDone} deleteTask={deleteTask} />
     </>
   );
 }
